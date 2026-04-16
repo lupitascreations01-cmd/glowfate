@@ -649,56 +649,27 @@
             margin: 0 auto 36px;
         }
 
-        /* Animated spinning ring */
-        .hero-ring-spin {
+        /* White pulsing glow — outer halo */
+        .hero-glow-outer {
             position: absolute;
-            inset: -4px;
+            inset: -28px;
             border-radius: 50%;
-            background: conic-gradient(
-                from 0deg,
-                #7c3aed,
-                #a855f7,
-                #c084fc,
-                #7c3aed 60%,
-                rgba(124,58,237,0.1) 60%,
-                rgba(124,58,237,0.1) 78%,
-                #6d28d9 78%,
-                #7c3aed
-            );
-            animation: spinRing 5s linear infinite;
+            background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+            animation: whiteGlow 3s ease-in-out infinite;
         }
 
-        @keyframes spinRing { to { transform: rotate(360deg); } }
-
-        /* Mask to create ring border effect — sits BEHIND the image */
-        .hero-ring-mask {
+        /* White pulsing glow — inner ring */
+        .hero-glow-ring {
             position: absolute;
-            inset: 3px;
+            inset: -8px;
             border-radius: 50%;
-            background: var(--bg-primary);
-            z-index: 0;
+            box-shadow: 0 0 30px 6px rgba(255,255,255,0.18), 0 0 60px 12px rgba(200,180,255,0.12);
+            animation: whiteGlow 3s ease-in-out infinite;
         }
 
-        /* Pulse rings */
-        .hero-pulse1 {
-            position: absolute;
-            inset: -16px;
-            border-radius: 50%;
-            border: 1px solid rgba(168,85,247,0.18);
-            animation: heroPulse 3s ease-in-out infinite;
-        }
-
-        .hero-pulse2 {
-            position: absolute;
-            inset: -30px;
-            border-radius: 50%;
-            border: 1px solid rgba(124,58,237,0.09);
-            animation: heroPulse 3s ease-in-out infinite 1.2s;
-        }
-
-        @keyframes heroPulse {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.02); }
+        @keyframes whiteGlow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50%       { opacity: 1;   transform: scale(1.04); }
         }
 
         /* Image inside circle — above the mask */
@@ -717,25 +688,7 @@
             object-position: center 10%;
         }
 
-        /* "Before & After" badge */
-        .hero-badge {
-            position: absolute;
-            bottom: -14px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-            background: linear-gradient(135deg, #3d1278, #6d28d9);
-            border: 1px solid rgba(196,167,255,0.4);
-            border-radius: var(--radius-full);
-            padding: 5px 18px;
-            font-size: 0.72rem;
-            color: #e9d5ff;
-            font-weight: 600;
-            letter-spacing: 0.07em;
-            white-space: nowrap;
-            box-shadow: 0 0 20px rgba(124,58,237,0.5);
-            text-transform: uppercase;
-        }
+
 
         .hero h1 { margin-bottom: 16px; }
         .hero .subtitle { max-width: 300px; margin: 0 auto; }
@@ -778,16 +731,13 @@
                 <div class="hero-orb2"></div>
 
                 <div class="hero-circle-wrap">
-                    <div class="hero-pulse1"></div>
-                    <div class="hero-pulse2"></div>
-                    <div class="hero-ring-spin"></div>
-                    <div class="hero-ring-mask"></div>
+                    <div class="hero-glow-outer"></div>
+                    <div class="hero-glow-ring"></div>
                     <div class="hero-circle-img">
                         <img src="hero-before-after.png"
                              alt="Before and after face transformation"
-                             onerror="this.parentElement.style.background='linear-gradient(135deg,#3d1278,#6d28d9)'; this.style.display='none';">
+                             onerror="this.parentElement.style.background='linear-gradient(135deg,#2a1060,#5b21b6)'; this.style.display='none';">
                     </div>
-                    <div class="hero-badge">✦ Before &amp; After</div>
                 </div>
 
                 <h1 data-i18n="welcome.title">See Your <span class="gradient-text">Future Face</span></h1>
