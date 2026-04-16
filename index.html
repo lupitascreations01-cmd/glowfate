@@ -889,9 +889,354 @@
             padding: 0 2px;
         }
 
+
+        /* ── SPLASH SCREEN ── */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #0d0b2b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        #splash.hide {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+
+        .splash-orb {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            width: 340px;
+            height: 340px;
+            background: radial-gradient(circle, rgba(139,92,246,0.3) 0%, transparent 70%);
+            animation: splashPulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes splashPulse {
+            0%, 100% { transform: translate(-50%, -60%) scale(1); opacity: 0.6; }
+            50%       { transform: translate(-50%, -60%) scale(1.15); opacity: 1; }
+        }
+
+        .splash-logo {
+            position: relative;
+            z-index: 2;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 2.6rem;
+            letter-spacing: 0.1em;
+            color: #fff;
+            text-shadow: 0 0 30px rgba(139,92,246,0.9), 0 0 60px rgba(139,92,246,0.4);
+            text-transform: uppercase;
+            animation: splashLogoIn 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes splashLogoIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .splash-line {
+            position: relative;
+            z-index: 2;
+            display: block;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(90deg, transparent, #8b5cf6, #a78bfa, transparent);
+            box-shadow: 0 0 12px rgba(139,92,246,0.9);
+            margin-top: 6px;
+            animation: splashLineGrow 0.7s 0.5s cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+
+        @keyframes splashLineGrow {
+            from { width: 0; opacity: 0; }
+            to   { width: 100%; opacity: 1; }
+        }
+
+        .splash-tagline {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: rgba(160,160,200,0.7);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: splashLogoIn 0.8s 0.8s cubic-bezier(0.16,1,0.3,1) forwards;
+        }
+
+        .splash-dots {
+            position: relative;
+            z-index: 2;
+            margin-top: 60px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .splash-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(139,92,246,0.5);
+            animation: dotPulse 1.2s ease-in-out infinite;
+        }
+
+        .splash-dot:nth-child(2) { animation-delay: 0.2s; }
+        .splash-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes dotPulse {
+            0%, 100% { background: rgba(139,92,246,0.3); transform: scale(1); }
+            50%       { background: rgba(139,92,246,1);   transform: scale(1.4); }
+        }
+
+        /* ── SHARE CARD ── */
+        .share-section {
+            padding: 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            margin: 24px 0;
+        }
+
+        .share-card-preview {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            background: linear-gradient(145deg, #1a1748, #0d0b2b);
+            border: 1px solid rgba(139,92,246,0.25);
+            padding: 28px 24px 24px;
+            margin-bottom: 16px;
+        }
+
+        /* Top gradient bar */
+        .share-card-preview::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+        }
+
+        /* Ambient glow */
+        .share-card-preview::after {
+            content: '';
+            position: absolute;
+            top: -60px; left: 50%;
+            transform: translateX(-50%);
+            width: 260px; height: 200px;
+            background: radial-gradient(ellipse, rgba(139,92,246,0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .share-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .share-card-brand {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: #fff;
+            text-shadow: 0 0 16px rgba(139,92,246,0.7);
+            text-transform: uppercase;
+        }
+
+        .share-card-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .share-card-body {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .share-card-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(139,92,246,0.5);
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(139,92,246,0.3);
+        }
+
+        .share-card-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .share-card-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2a1060, #5b21b6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .share-card-info {
+            flex: 1;
+        }
+
+        .share-card-score-row {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .share-card-score-num {
+            font-family: 'Syne', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .share-card-score-lbl {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .share-card-tagline {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .share-card-tagline strong {
+            color: var(--accent-purple-light);
+        }
+
+        /* Habit pills */
+        .share-card-habits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 20px;
+        }
+
+        .share-habit-pill {
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+
+        .share-habit-pill.good {
+            background: rgba(126,232,160,0.12);
+            border: 1px solid rgba(126,232,160,0.25);
+            color: #7ee8a0;
+        }
+
+        .share-habit-pill.bad {
+            background: rgba(255,136,136,0.12);
+            border: 1px solid rgba(255,136,136,0.25);
+            color: #ff9999;
+        }
+
+        .share-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            padding-top: 16px;
+            border-top: 1px solid rgba(139,92,246,0.1);
+        }
+
+        .share-card-url {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+
+        .share-card-stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .share-card-stars span {
+            color: #a78bfa;
+            font-size: 0.75rem;
+        }
+
+        /* Share action buttons */
+        .share-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .share-actions .btn {
+            flex: 1;
+            padding: 14px 16px;
+            font-size: 0.9rem;
+        }
+
+        .btn-share-ig {
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(124,58,237,0.4);
+        }
+
+        .btn-share-save {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid rgba(139,92,246,0.2);
+        }
+
     </style>
 </head>
 <body>
+    
+    <!-- ══ Splash Screen ══ -->
+    <div id="splash">
+        <div class="splash-orb"></div>
+        <div style="position:relative;z-index:2;text-align:center;">
+            <div class="splash-logo">
+                GLOWFATE
+                <span class="splash-line"></span>
+            </div>
+            <p class="splash-tagline">See Your Future Face</p>
+        </div>
+        <div class="splash-dots">
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+            <div class="splash-dot"></div>
+        </div>
+    </div>
+
     <div id="app">
 
         <!-- ══ Screen 1: Welcome ══ -->
@@ -1191,21 +1536,49 @@
             <div class="insights-list" id="insights-list"></div>
 
             <div class="share-section">
-                <h3 data-i18n="results.shareTitle">Share Your Prediction</h3>
-                <p data-i18n="results.shareSubtitle">Show your friends your glow journey</p>
-                <div class="share-buttons">
-                    <button class="btn btn-secondary" onclick="shareResult('story')">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <!-- Shareable card preview -->
+                <div class="share-card-preview" id="share-card">
+                    <div class="share-card-top">
+                        <span class="share-card-brand">GLOWFATE</span>
+                        <span class="share-card-date" id="share-date"></span>
+                    </div>
+                    <div class="share-card-body">
+                        <div class="share-card-photo" id="share-photo">
+                            <div class="share-card-photo-placeholder">✦</div>
+                        </div>
+                        <div class="share-card-info">
+                            <div class="share-card-score-row">
+                                <span class="share-card-score-num" id="share-score-num">—</span>
+                                <span class="share-card-score-lbl">Glow Score</span>
+                            </div>
+                            <p class="share-card-tagline" id="share-tagline">
+                                My skin's <strong>future</strong> starts today
+                            </p>
+                        </div>
+                    </div>
+                    <div class="share-card-habits" id="share-habits"></div>
+                    <div class="share-card-footer">
+                        <span class="share-card-url">glowfate.vercel.app</span>
+                        <div class="share-card-stars">
+                            <span>✦</span><span>✦</span><span>✦</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="share-actions">
+                    <button class="btn btn-share-ig" onclick="shareResult('story')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <rect x="2" y="2" width="20" height="20" rx="5"/>
                             <circle cx="12" cy="12" r="4"/>
+                            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
                         </svg>
-                        <span>Story</span>
+                        Share Story
                     </button>
-                    <button class="btn btn-secondary" onclick="shareResult('download')">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <button class="btn btn-share-save" onclick="shareResult('download')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
                         </svg>
-                        <span data-i18n="results.download">Save</span>
+                        Save
                     </button>
                 </div>
             </div>
@@ -1425,6 +1798,13 @@
             initLanguageToggle();
             renderHabits();
             updateLanguage();
+
+            // Splash screen — hide after 2.2s
+            setTimeout(() => {
+                const splash = document.getElementById('splash');
+                splash.classList.add('hide');
+                setTimeout(() => { splash.style.display = 'none'; }, 700);
+            }, 2200);
         });
 
         function initLanguageToggle() {
@@ -1550,6 +1930,7 @@
             animateScore(score);
             renderInsights(insights);
             initSimulator();
+            renderShareCard(score);
         }
 
         function animateScore(score) {
