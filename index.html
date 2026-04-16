@@ -708,6 +708,187 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--bg-elevated); border-radius: 3px; }
+
+        /* ── HABIT SIMULATOR ── */
+        .simulator-container {
+            background: var(--bg-card);
+            border: 1px solid rgba(168,85,247,0.2);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin: 24px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .simulator-container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #7c3aed, #a855f7, #c084fc);
+        }
+
+        .simulator-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .simulator-subtitle {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 20px;
+        }
+
+        /* Score delta display */
+        .sim-score-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: var(--bg-elevated);
+            border-radius: var(--radius-md);
+        }
+
+        .sim-score-orig {
+            text-align: center;
+        }
+
+        .sim-score-orig .val {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-secondary);
+        }
+
+        .sim-score-orig .lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sim-arrow {
+            font-size: 1.5rem;
+            color: var(--accent-purple);
+        }
+
+        .sim-score-new {
+            text-align: center;
+        }
+
+        .sim-score-new .val {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7c3aed, #a855f7, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.4s ease;
+        }
+
+        .sim-score-new .lbl {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sim-delta {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-align: center;
+            min-height: 20px;
+            transition: all 0.3s;
+        }
+
+        .sim-delta.positive { color: var(--accent-success); }
+        .sim-delta.negative { color: #ff8888; }
+        .sim-delta.neutral  { color: var(--text-muted); }
+
+        /* Habit sliders */
+        .sim-habits {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .sim-habit-row {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sim-habit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sim-habit-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .sim-habit-value {
+            font-size: 0.8rem;
+            color: var(--accent-purple-light);
+            font-weight: 600;
+        }
+
+        /* Custom range slider */
+        .sim-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .sim-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(139,92,246,0.5);
+            transition: box-shadow 0.2s;
+        }
+
+        .sim-slider::-webkit-slider-thumb:hover {
+            box-shadow: 0 0 14px rgba(139,92,246,0.8);
+        }
+
+        .sim-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 8px rgba(139,92,246,0.5);
+        }
+
+        .sim-option-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            padding: 0 2px;
+        }
+
     </style>
 </head>
 <body>
@@ -905,6 +1086,106 @@
                     <div class="score-value gradient-text" id="score-value">0</div>
                 </div>
                 <p class="score-label" data-i18n="results.glowScore">Glow Score</p>
+            </div>
+
+
+            <!-- ══ Habit Simulator ══ -->
+            <div class="simulator-container">
+                <p class="simulator-title">✦ What if you changed a habit?</p>
+                <p class="simulator-subtitle">Move the sliders and see your new Glow Score</p>
+
+                <div class="sim-score-row">
+                    <div class="sim-score-orig">
+                        <div class="val" id="sim-orig-score">—</div>
+                        <div class="lbl">Your score</div>
+                    </div>
+                    <div class="sim-arrow">→</div>
+                    <div class="sim-score-new">
+                        <div class="val" id="sim-new-score">—</div>
+                        <div class="lbl">With changes</div>
+                    </div>
+                </div>
+                <p class="sim-delta neutral" id="sim-delta">Adjust a habit to see your potential</p>
+
+                <div class="sim-habits">
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">😴 <span data-i18n="habit.sleep">Sleep</span></span>
+                            <span class="sim-habit-value" id="lbl-sleep"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-sleep" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.sleep.1">Less than 6h</span>
+                            <span data-i18n="habit.sleep.2">6-7h</span>
+                            <span data-i18n="habit.sleep.3">8+h</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">💧 <span data-i18n="habit.water">Water</span></span>
+                            <span class="sim-habit-value" id="lbl-water"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-water" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.water.1">&lt;4 glasses</span>
+                            <span data-i18n="habit.water.2">4-6</span>
+                            <span data-i18n="habit.water.3">7+</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">☀️ <span data-i18n="habit.sunscreen">Sunscreen</span></span>
+                            <span class="sim-habit-value" id="lbl-sunscreen"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-sunscreen" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.sunscreen.1">Never</span>
+                            <span data-i18n="habit.sunscreen.2">Sometimes</span>
+                            <span data-i18n="habit.sunscreen.3">Always</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">🍷 <span data-i18n="habit.alcohol">Alcohol</span></span>
+                            <span class="sim-habit-value" id="lbl-alcohol"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-alcohol" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.alcohol.1">None</span>
+                            <span data-i18n="habit.alcohol.2">1-2x</span>
+                            <span data-i18n="habit.alcohol.3">3+x</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">🚬 <span data-i18n="habit.smoking">Smoking</span></span>
+                            <span class="sim-habit-value" id="lbl-smoking"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-smoking" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.smoking.1">No</span>
+                            <span data-i18n="habit.smoking.2">Occasionally</span>
+                            <span data-i18n="habit.smoking.3">Daily</span>
+                        </div>
+                    </div>
+
+                    <div class="sim-habit-row">
+                        <div class="sim-habit-header">
+                            <span class="sim-habit-name">💪 <span data-i18n="habit.exercise">Exercise</span></span>
+                            <span class="sim-habit-value" id="lbl-exercise"></span>
+                        </div>
+                        <input type="range" class="sim-slider" id="sim-exercise" min="1" max="3" step="1" oninput="updateSimulator()">
+                        <div class="sim-option-labels">
+                            <span data-i18n="habit.exercise.1">None</span>
+                            <span data-i18n="habit.exercise.2">1-2x</span>
+                            <span data-i18n="habit.exercise.3">3+x</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="insights-list" id="insights-list"></div>
@@ -1268,6 +1549,7 @@
             goToScreen('results');
             animateScore(score);
             renderInsights(insights);
+            initSimulator();
         }
 
         function animateScore(score) {
