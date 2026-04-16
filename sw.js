@@ -1,9 +1,10 @@
 // GlowFate Service Worker
-const CACHE_NAME = 'glowfate-v1';
+const CACHE_NAME = 'glowfate-v3';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/manifest.json'
+  '/manifest.json',
+  '/hero-before-after.png'
 ];
 
 // Install event
@@ -15,20 +16,22 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Fetch event
+// Fetch event — network first, cache fallback
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then((response) => {
-        if (response) {
-          return response;
-        }
-        return fetch(event.request);
+        const responseClone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseClone);
+        });
+        return response;
       })
+      .catch(() => caches.match(event.request))
   );
 });
 
-// Activate event
+// Activate event — delete old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
